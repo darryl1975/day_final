@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="form-container">
+        <h1>File Upload from Angular</h1>
+        <hr>
+        <br>
+
+        <form [formGroup]="myForm" (ngSubmit)="submit()">
+            <div class="form-group">
+                <label for="file">File</label>
+                <input
+                    formControlName="file" 
+                    id="file"
+                    type="file"
+                    class="form-control"
+                    (change)="onFileSelected($event)">
+            </div>
+            <div *ngIf="f['file'].invalid && f['file'].touched" class="alert alert-danger">
+                <div *ngIf="f['file'].errors && f['file'].errors['required']">
+                    File is required
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" [disabled]="myForm.invalid">Submit</button>
+        </form>
+    </div>
+</div>
