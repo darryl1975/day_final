@@ -14,8 +14,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import sg.edu.nus.iss.day38_backend.exceptions.ResponseMessage;
+import sg.edu.nus.iss.day38_backend.model.FileInfo;
 import sg.edu.nus.iss.day38_backend.service.ImageService;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -68,13 +70,14 @@ public class UploadController {
     }
 
     @GetMapping("/list-files")
-    public ResponseEntity<List<String>> getFilesList() throws IOException {
-        List<String> fileInfos = imgSvc.loadAll().map(path -> {
+    public ResponseEntity<List<FileInfo>> getFilesList() throws IOException {
+        List<FileInfo> fileInfos = imgSvc.loadAll().map(path -> {
 
             // do something here
             String filename= path.getFileName().toString();
+            String fileURL = MvcUriComponentsBuilder.fromMethodName(UploadController.class, "getFileByFilename", path.getFileName().toString()).build().toString();
             
-            return filename;
+            return new FileInfo(filename, fileURL);
 
         }).collect(Collectors.toList());
 
