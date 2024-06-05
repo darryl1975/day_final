@@ -69,27 +69,6 @@ public class UploadController {
         }
     }
 
-    @GetMapping("/list-files")
-    public ResponseEntity<List<FileInfo>> getFilesList() throws IOException {
-        List<FileInfo> fileInfos = imgSvc.loadAll().map(path -> {
 
-            // do something here
-            String filename= path.getFileName().toString();
-            String fileURL = MvcUriComponentsBuilder.fromMethodName(UploadController.class, "getFileByFilename", path.getFileName().toString()).build().toString();
-            
-            return new FileInfo(filename, fileURL);
-
-        }).collect(Collectors.toList());
-
-        return ResponseEntity.status(HttpStatus.OK).body(fileInfos);
-    }
-
-    @GetMapping("/file/{filename:.+}")
-    public ResponseEntity<Resource> getFileByFilename(@PathVariable String filename) {
-        Resource resource = imgSvc.loadFile(filename);
-
-        return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment, filename=\"" + resource.getFilename() + "\"").body(resource);
-    }
-    
     
 }

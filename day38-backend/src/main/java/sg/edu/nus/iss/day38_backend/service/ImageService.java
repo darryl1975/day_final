@@ -6,6 +6,7 @@ import java.net.MalformedURLException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Stream;
 
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import sg.edu.nus.iss.day38_backend.model.ImageData;
 import sg.edu.nus.iss.day38_backend.repository.ImageRepo;
 
 @Service
@@ -29,6 +31,11 @@ public class ImageService {
         imgRepo.save(pic_id, is, contentType);
 
         return pic_id;
+    }
+
+    public Optional<ImageData> getPicById(String pic_id) {
+        return imgRepo.getPicture(pic_id);
+
     }
 
     // Additional: upload files and save to a local directory "uploads" within the
