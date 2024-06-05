@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import sg.edu.nus.iss.day38_backend.model.ImageData;
 import sg.edu.nus.iss.day38_backend.repository.ImageRepo;
+import sg.edu.nus.iss.day38_backend.repository.S3Repo;
 
 @Service
 public class ImageService {
@@ -26,11 +27,18 @@ public class ImageService {
     @Autowired
     ImageRepo imgRepo;
 
+    @Autowired
+    S3Repo s3Repo;
+
     public String saveToDB(InputStream is, String contentType) {
         String pic_id = UUID.randomUUID().toString().substring(0, 8);
         imgRepo.save(pic_id, is, contentType);
 
         return pic_id;
+    }
+
+    public String saveToS3(MultipartFile file) {
+        return s3Repo.saveToS3(file);
     }
 
     public Optional<ImageData> getPicById(String pic_id) {

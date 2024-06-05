@@ -35,8 +35,7 @@ public class UploadController {
     ImageService imgSvc;
 
     @PostMapping(path = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ModelAndView postFileUpload(@RequestPart MultipartFile myfile, @RequestPart String comments)
-            throws IOException {
+    public ModelAndView postFileUpload(@RequestPart MultipartFile myfile, @RequestPart String comments) throws IOException {
 
         ModelAndView mav = new ModelAndView("picturefile");
 
@@ -45,6 +44,23 @@ public class UploadController {
         System.out.println("myfile >>> " + myfile.getSize());
 
         imgSvc.saveToDB(myfile.getInputStream(), comments);
+
+        mav.addObject("comments", comments);
+
+        return mav;
+    }
+
+
+    @PostMapping(path = "/uploads3", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ModelAndView postFileUploadS3(@RequestPart MultipartFile myfile, @RequestPart String comments) throws IOException {
+
+        ModelAndView mav = new ModelAndView("picturefile");
+
+        System.out.println("myfile >>> " + myfile.getInputStream().toString());
+        System.out.println("myfile >>> " + myfile.getOriginalFilename());
+        System.out.println("myfile >>> " + myfile.getSize());
+
+        imgSvc.saveToS3(myfile);
 
         mav.addObject("comments", comments);
 
