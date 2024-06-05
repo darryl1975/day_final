@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -48,5 +49,9 @@ public class ImageService {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
+    }
+
+    public Stream<Path> loadAll() throws IOException {
+        return Files.walk(this.fileUpload, 1).filter(path -> !path.equals(this.fileUpload)).map(this.fileUpload::relativize);
     }
 }

@@ -16,6 +16,11 @@ import org.springframework.web.servlet.ModelAndView;
 import sg.edu.nus.iss.day38_backend.exceptions.ResponseMessage;
 import sg.edu.nus.iss.day38_backend.service.ImageService;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping
@@ -58,4 +63,19 @@ public class UploadController {
             return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
         }
     }
+
+    @GetMapping("/list-files")
+    public ResponseEntity<List<String>> getFilesList() throws IOException {
+        List<String> fileInfos = imgSvc.loadAll().map(path -> {
+
+            // do something here
+            String filename= path.getFileName().toString();
+            
+            return filename;
+
+        }).collect(Collectors.toList());
+
+        return ResponseEntity.status(HttpStatus.OK).body(fileInfos);
+    }
+    
 }
