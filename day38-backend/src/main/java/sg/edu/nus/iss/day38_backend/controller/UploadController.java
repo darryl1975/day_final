@@ -3,7 +3,9 @@ package sg.edu.nus.iss.day38_backend.controller;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,17 +13,20 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import sg.edu.nus.iss.day38_backend.exceptions.ResponseMessage;
 import sg.edu.nus.iss.day38_backend.service.ImageService;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Controller
 @RequestMapping
 public class UploadController {
-    
+
     @Autowired
     ImageService imgSvc;
 
     @PostMapping(path = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ModelAndView postFileUpload(@RequestPart MultipartFile myfile, @RequestPart String comments) throws IOException {
+    public ModelAndView postFileUpload(@RequestPart MultipartFile myfile, @RequestPart String comments)
+            throws IOException {
 
         ModelAndView mav = new ModelAndView("picturefile");
 
@@ -34,5 +39,23 @@ public class UploadController {
         mav.addObject("comments", comments);
 
         return mav;
+    }
+
+    // additonal:
+
+    @PostMapping("/file-upload")
+    public ResponseEntity<ResponseMessage> uploadFileToDirectory(@RequestBody MultipartFile file) {
+
+        try {
+            imgSvc.save(file);
+
+            String message = "File uploaded successfully";
+
+            return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
+        } catch (Exception ex) {
+
+            String message = ex.toString();
+            return ResponseEntity.status(HttpStatus.EXPECTATION_FAILED).body(new ResponseMessage(message));
+        }
     }
 }
