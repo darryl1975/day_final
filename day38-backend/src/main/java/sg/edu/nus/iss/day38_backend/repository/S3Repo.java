@@ -5,10 +5,14 @@ import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.GetObjectRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.model.S3Object;
+import com.amazonaws.services.s3.model.S3ObjectInputStream;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -23,6 +27,8 @@ public class S3Repo {
 
     public String saveToS3(MultipartFile uploadFile) {
 
+        String id = UUID.randomUUID().toString().substring(0, 8);
+
         try {
             Map<String, String> userData = new HashMap<>();
             userData.put("name", "Vivien");
@@ -33,20 +39,20 @@ public class S3Repo {
             metadata.setContentLength(uploadFile.getSize());
             metadata.setUserMetadata(userData);
 
-            String id = UUID.randomUUID().toString().substring(0, 8);
 
             PutObjectRequest putRequest = new PutObjectRequest("day39", "%s".formatted(id), uploadFile.getInputStream(),
                     metadata);
             putRequest.withCannedAcl(CannedAccessControlList.PublicRead);
 
             PutObjectResult result = s3.putObject(putRequest);
-            System.out.println("PutObjectResult: " + result.toString());
+            System.out.println("PutObjectResult: " + result.getMetadata().toString());
 
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        return null;
+        return id;
     }
+
 }

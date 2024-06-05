@@ -60,8 +60,10 @@ public class UploadController {
         System.out.println("myfile >>> " + myfile.getOriginalFilename());
         System.out.println("myfile >>> " + myfile.getSize());
 
-        imgSvc.saveToS3(myfile);
+        String resultId = imgSvc.saveToS3(myfile);
 
+        // References: https://day39.sgp1.digitaloceanspaces.com/4634b174
+        mav.addObject("imageURL", "https://day39.sgp1.digitaloceanspaces.com/" + resultId);
         mav.addObject("comments", comments);
 
         return mav;
