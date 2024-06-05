@@ -33,7 +33,7 @@ public class ImageRepo {
             if (!rs.next())
                 return Optional.empty();
             
-            ImageData data = new ImageData(rs.getString("pic_id"), rs.getBytes("content"), rs.getString("mine"));
+            ImageData data = new ImageData(rs.getString("pic_id"), rs.getBytes("content"), rs.getString("mime"));
             return Optional.of(data);
         }, pic_id);
     } 

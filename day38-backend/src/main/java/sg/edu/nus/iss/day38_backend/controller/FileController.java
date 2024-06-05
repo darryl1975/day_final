@@ -52,7 +52,7 @@ public class FileController {
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment, filename=\"" + resource.getFilename() + "\"").body(resource);
     }
     
-    @GetMapping("/{pic-id}")
+    @GetMapping("/myfile/{pic-id}")
     public ResponseEntity<ImageData> getImageDataByPictureId(@PathVariable("pic-id") String pic_id) {
         
         Optional<ImageData> resultImageData = imgSvc.getPicById(pic_id);
