@@ -75,9 +75,13 @@ public class UploadController {
     public ResponseEntity<ResponseMessage> uploadFileToDirectory(@RequestBody MultipartFile file) {
 
         try {
-            imgSvc.save(file);
+            // imgSvc.save(file);
+            String resultId = imgSvc.saveToS3(file);
 
             String message = "File uploaded successfully";
+
+            System.out.println("Multiplartfile>>>" + file.toString());
+            System.out.println("Comments>>>" + file.getName());
 
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         } catch (Exception ex) {
