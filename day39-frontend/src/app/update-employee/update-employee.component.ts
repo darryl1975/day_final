@@ -41,7 +41,7 @@ export class UpdateEmployeeComponent implements OnInit {
       this.employeeForm.controls["firstName"].setValue(data.firstName);
       this.employeeForm.controls["lastName"].setValue(data.lastName);
       this.employeeForm.controls["email"].setValue(data.email);
-      this.employeeForm.controls["profileUrl"].setValue(data.profileUrl);
+      this.employeeForm.controls["profileUrl"].setValue(data.profileURL);
 
       // this.employeeForm.setValue({id: data.id, firstName: data.firstName, lastName: data.lastName, email: data.email, profileUrl: data.profileUrl });
     });

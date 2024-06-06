@@ -15,11 +15,15 @@ export class CreateEmployeeComponent implements OnInit {
 
   formBuilder?: FormBuilder;
 
+  file?: File;
+
   employeeForm: FormGroup = new FormGroup({
     firstName: new FormControl(''),
     lastName: new FormControl(''),
     email: new FormControl(''),
-    profileUrl: new FormControl('')
+    profileUrl: new FormControl(''),
+    file: new FormControl(''),
+    fileSource: new FormControl('')
   });
 
   ngOnInit(): void {
@@ -35,19 +39,42 @@ export class CreateEmployeeComponent implements OnInit {
     this.formBuilder = formBuilder;
   }
 
+  onFileSelected(event: any) {
+    if (event.target.files.length > 0) {
+      this.file = event.target.files[0];
+
+      const f1= event.target.files[0];
+
+      this.employeeForm.patchValue({
+        fileSource: f1
+      });
+    }
+  }
+
   submitSave(): void {
     console.log('create-employee submitSave >>> ' + this.employeeForm.controls['firstName'].value);
     console.log('create-employee submitSave >>> ' +this.employeeForm.controls['lastName'].value);
     console.log('create-employee submitSave >>> ' +this.employeeForm.controls['email'].value);
     console.log('create-employee submitSave >>> ' +this.employeeForm.controls['profileUrl'].value);
+    console.log('create-employee submitSave >>> ' +this.employeeForm.controls['fileSource'].value);
 
     this.employee.firstName = this.employeeForm.controls['firstName'].value;
     this.employee.lastName = this.employeeForm.controls['lastName'].value;
     this.employee.email = this.employeeForm.controls['email'].value;
-    this.employee.profileUrl = this.employeeForm.controls['profileUrl'].value;
+    this.employee.profileURL = this.employeeForm.controls['profileUrl'].value;
     console.log('create-employee submitSave >>> ' +this.employee);
 
-    this.empSvc.createEmployee(this.employee).subscribe(data => {
+    const fileSourceValue = this.employeeForm.get('fileSource')?.value;
+
+    const formData = new FormData();
+    if (fileSourceValue !== null && fileSourceValue !== undefined) {
+      formData.append('file', fileSourceValue);
+    }
+    formData.append('firstName', this.employeeForm.controls['firstName'].value);
+    formData.append('lastName', this.employeeForm.controls['lastName'].value);
+    formData.append('email', this.employeeForm.controls['email'].value);
+
+    this.empSvc.createEmployeeWithS3(formData).subscribe(data => {
       console.log('create-employee submitSaved >>> ' + data);
 
       this.router.navigate(['/employees']);

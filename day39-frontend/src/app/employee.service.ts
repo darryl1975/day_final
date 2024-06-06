@@ -20,6 +20,10 @@ export class EmployeeService {
     return this.httpClient.post(`${this.baseURL}`, employee);
   }
 
+  createEmployeeWithS3(formData: FormData) : Observable<Object> {
+    return this.httpClient.post(`${this.baseURL}` + "/s3", formData);
+  }
+
   getEmployeeById(id: number) : Observable<Employee> {
     return this.httpClient.get<Employee>(`${this.baseURL}/${id}`);
   }

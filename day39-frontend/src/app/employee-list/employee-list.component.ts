@@ -16,7 +16,11 @@ export class EmployeeListComponent implements OnInit {
 
   ngOnInit(): void {
     this.empSvc.getEmployeeList().subscribe(data => {
-      console.log("employee  list>>> " + data)
+      // console.log("employee  list>>> " + data)
+
+      for (let i = 0; i < data.length; i++) {
+        console.log("employee >>> " + data[i].id + " >>> " + data[i].profileURL)
+      }
       this.employees = data;
     });
   }

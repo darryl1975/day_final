@@ -53,6 +53,10 @@ public class EmployeeController {
     public ResponseEntity<List<Employee>> findAll() {
         List<Employee> employees = empSvc.findAll();
 
+        // for (Employee employee : employees) {
+        //     System.out.println("employee:" + employee.getId() + ">>>" + employee.getProfileURL());
+        // }
+
         return new ResponseEntity<List<Employee>>(employees, HttpStatus.OK);
     }
 
@@ -71,6 +75,11 @@ public class EmployeeController {
         newEmployee.setFirstName(firstName);
         newEmployee.setLastName(lastName);
         newEmployee.setEmail(email);
+
+        System.out.println("file >>> " + myfile.toString());
+        System.out.println("firstName >>> " + firstName);
+        System.out.println("lastName >>> " + lastName);
+        System.out.println("email >>> " + email);
 
         Boolean result = empSvc.saveWithS3(newEmployee, myfile);
 

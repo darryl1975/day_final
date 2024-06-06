@@ -18,10 +18,12 @@
                     <td>{{ employee.firstName }}</td>
                     <td>{{ employee.lastName }}</td>
                     <td>{{ employee.email }}</td>
-                    <td>{{ employee.profileUrl }}</td>
+                    <td>{{ employee.profileURL }}</td>
                     <td>
                         <button (click)="deleteEmployee(employee.id)" class="btn btn-danger">Delete</button>
+                        &nbsp;&nbsp;
                         <button (click)="showEmployeeDetails(employee.id)" class="btn btn-success">Details</button>
+                        &nbsp;&nbsp;
                         <button (click)="updateEmployee(employee.id)" class="btn btn-dark">Update</button>
                     </td>
                 </tr>
