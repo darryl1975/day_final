@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -65,8 +65,7 @@ public class EmployeeController {
     }
 
     @PostMapping(path = "/s3", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<Boolean> postEmployeeWithFileToS3(@RequestPart MultipartFile myfile, @RequestPart String firstName,
-            @RequestPart String lastName, @RequestPart String email) throws IOException {
+    public ResponseEntity<Boolean> postEmployeeWithFileToS3(@RequestParam("file") MultipartFile myfile, @RequestParam("firstName") String firstName, @RequestParam("lastName") String lastName, @RequestParam("email") String email) throws IOException {
 
         Employee newEmployee = new Employee();
         newEmployee.setFirstName(firstName);

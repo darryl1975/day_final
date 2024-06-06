@@ -72,7 +72,7 @@ public class UploadController {
     // additonal:
 
     @PostMapping("/file-upload")
-    public ResponseEntity<ResponseMessage> uploadFileToDirectory(@RequestBody MultipartFile file) {
+    public ResponseEntity<ResponseMessage> uploadFileToDirectory(@RequestParam("file") MultipartFile file, @RequestParam("comments") String comments) {
 
         try {
             // imgSvc.save(file);
@@ -81,7 +81,7 @@ public class UploadController {
             String message = "File uploaded successfully";
 
             System.out.println("Multiplartfile>>>" + file.toString());
-            System.out.println("Comments>>>" + file.getName());
+            System.out.println("Comments>>>" + comments);
 
             return ResponseEntity.status(HttpStatus.OK).body(new ResponseMessage(message));
         } catch (Exception ex) {
