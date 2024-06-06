@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
+import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.PreparedStatementSetter;
@@ -25,8 +26,7 @@ public class EmployeeRepo {
 
     String findAllSQL = "select e.id as emp_id, e.first_name, e.last_name, e.email, profile_url from employee e";
 
-    String findByIdSQL = "select e.id as emp_id, e.first_name, e.last_name, e.email, profile_url from employee e " +
-            " where e.id = ? ";
+    String findByIdSQL = "select e.id, e.first_name, e.last_name, e.email, profile_url from employee e where e.id = ? ";
 
     String insertSQL = "insert into employee (first_name, last_name, email, profile_url) values (?, ?, ?, ?)";
 
@@ -123,29 +123,32 @@ public class EmployeeRepo {
     }
 
     public Employee findByEmployeeId(Integer employeeId) {
-        Employee employee = new Employee();
+        System.out.println("EmployeeRepo @findByEmployeeId >>> " + employeeId);
+        // Employee employee = new Employee();
 
-        employee = jdbcTemplate.query(findByIdSQL, new ResultSetExtractor<Employee>() {
+        // employee = jdbcTemplate.query(findByIdSQL, new ResultSetExtractor<Employee>() {
 
-            @Override
-            public Employee extractData(ResultSet rs) throws SQLException, DataAccessException {
-                Employee emp = new Employee();
+        //     @Override
+        //     public Employee extractData(ResultSet rs) throws SQLException, DataAccessException {
+        //         Employee emp = new Employee();
 
-                while (rs.next()) {
-                    // e.id as emp_id, e.first_name, e.last_name, e.salary,
-                    Employee employee = new Employee();
-                    employee.setId(rs.getInt("emp_id"));
-                    employee.setFirstName(rs.getString("first_name"));
-                    employee.setLastName(rs.getString("last_name"));
-                    employee.setEmail(rs.getString("email"));
-                    employee.setProfileURL(rs.getString("profile_url"));
-                }
+        //         while (rs.next()) {
+        //             // e.id as emp_id, e.first_name, e.last_name, e.salary,
+        //             Employee employee = new Employee();
+        //             employee.setId(rs.getInt("emp_id"));
+        //             employee.setFirstName(rs.getString("first_name"));
+        //             employee.setLastName(rs.getString("last_name"));
+        //             employee.setEmail(rs.getString("email"));
+        //             employee.setProfileURL(rs.getString("profile_url"));
+        //         }
 
-                return emp;
-            }
-        }, employeeId);
+        //         return emp;
+        //     }
+        // }, employeeId);
 
-        return employee;
+        // return employee;
+
+        return jdbcTemplate.queryForObject(findByIdSQL, BeanPropertyRowMapper.newInstance(Employee.class), employeeId);
     }
 
 }

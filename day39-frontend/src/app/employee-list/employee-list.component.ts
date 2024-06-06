@@ -16,10 +16,20 @@ export class EmployeeListComponent implements OnInit {
 
   ngOnInit(): void {
     this.empSvc.getEmployeeList().subscribe(data => {
+      console.log("employee  list>>> " + data)
       this.employees = data;
     });
   }
 
+  deleteEmployee(id: number) {
+    console.log("employee  list delete record id >>> " + id);
 
+    // call API using empSvc to perform the delete of the record
+  }
+
+  showEmployeeDetails(id: number) {
+    console.log("employee  list show details record id >>> " + id);
+    this.router.navigate([`/employee-details/${id}`]);
+  }
 
 }

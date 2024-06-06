@@ -50,7 +50,7 @@ export class CreateEmployeeComponent implements OnInit {
     this.empSvc.createEmployee(this.employee).subscribe(data => {
       console.log('create-employee submitSaved >>> ' + data);
 
-      // this.router.navigate(['/employees']);
+      this.router.navigate(['/employees']);
     });
   }
 

@@ -58,6 +58,7 @@ public class EmployeeController {
 
     @GetMapping("/{employee-id}")
     public ResponseEntity<Employee> findByEmployeeId(@PathVariable("employee-id") Integer employeeId) {
+        System.out.println("@GetMapping({employee-id}) >>> " + employeeId);
         Employee employee = empSvc.findByEmployeeId(employeeId);
 
         return new ResponseEntity<Employee>(employee, HttpStatus.OK);
